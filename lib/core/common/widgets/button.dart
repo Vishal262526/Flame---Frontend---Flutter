@@ -1,0 +1,43 @@
+import 'package:flame/core/theme/app_colors.dart';
+import 'package:flutter/material.dart';
+
+class Button extends StatelessWidget {
+  final String text;
+  final Widget? icon;
+  final VoidCallback? onTap;
+  final bool fullWidth;
+  final bool isDisabled;
+  final Color backgroundColor;
+
+  const Button({
+    super.key,
+    required this.text,
+    this.icon,
+    required this.onTap,
+    this.fullWidth = false,
+    this.isDisabled = false,
+    this.backgroundColor = DarkColors.primary,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: fullWidth ? double.infinity : null,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+        ),
+        onPressed: isDisabled ? null : onTap,
+        child: Wrap(
+          spacing: 16,
+          direction: Axis.horizontal,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            if (icon != null) icon!,
+            Text(text),
+          ],
+        ),
+      ),
+    );
+  }
+}
