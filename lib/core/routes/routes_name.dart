@@ -9,4 +9,5 @@ class RoutesName {
   static const String chatInbox = "/chatInbox";
   static const String updateProfile = "/updateProfile";
   static const String requests = "/requests";
+  static const String flames = "/flames";
 }

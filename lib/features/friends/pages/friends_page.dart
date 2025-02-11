@@ -3,7 +3,6 @@ import 'package:flame/core/theme/app_colors.dart';
 import 'package:flame/features/friends/controllers/friend_controller.dart';
 import 'package:flame/features/friends/widgets/friends_list_widget.dart';
 import 'package:flame/features/friends/widgets/received_requests_list_widget.dart';
-import 'package:flame/features/friends/widgets/sent_request_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -66,7 +65,7 @@ class _FriendsPageState extends State<FriendsPage>
             children: [
               FriendsListWidget(
                 onTap: (userId) {
-                  Get.toNamed(RoutesName.userProfile, arguments: userId);
+                  Get.toNamed(RoutesName.friendProfile, arguments: userId);
                 },
                 friendsList: friendController.friendsList,
                 isLoading: friendController.friendsLoading.value,
@@ -74,7 +73,7 @@ class _FriendsPageState extends State<FriendsPage>
               ReceivedRequestsListWidget(
                 disabled: friendController.actionProcessing.value,
                 onAccepted: (friendId) {
-                  // friendController.acceptFriendRequest(friendId: friendId);
+                  friendController.acceptFriendRequest(friendId: friendId);
                 },
                 requestsList: friendController.receivedRequestsList,
                 isLoading: friendController.receivedRequestsLoading.value,

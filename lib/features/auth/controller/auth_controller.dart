@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/utils/app_utils.dart';
+import 'package:flame/services/notification_services.dart';
 import 'package:get/get.dart';
 import 'package:flame/features/auth/repository/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,6 +18,8 @@ class AuthController extends GetxController {
   final user = Rx<User?>(null);
 
   final myProfile = Rx<CurrentUserModel?>(null);
+
+  StreamSubscription? notificationRefreshStream;
 
   @override
   void onReady() {
@@ -37,12 +43,39 @@ class AuthController extends GetxController {
             (failure) {
               AppUtils.showSnackBar(title: "Error", message: failure.message);
             },
-            (profileData) {
+            (profileData) async {
               if (profileData == null) {
                 Get.offAllNamed(RoutesName.updateProfile);
               } else {
                 myProfile.value = profileData;
-                Get.offAllNamed(RoutesName.mainLayout);
+
+                try {
+                  // Request Notification Permission
+                  await NotificationServices.requestNotificationPermission();
+
+                  notificationRefreshStream?.cancel();
+
+                  // Get the FCM Token
+                  final fcmToken = await NotificationServices.getFcmToken();
+
+                  if (fcmToken != null) {
+                    // Update FCM Token
+                    await _authRepostiory.updateFCMToken(fmcToken: fcmToken);
+                  }
+
+                  Get.offAllNamed(RoutesName.mainLayout);
+
+                  notificationRefreshStream =
+                      FirebaseMessaging.instance.onTokenRefresh.listen(
+                    (newFcmToken) async {
+                      await _authRepostiory.updateFCMToken(
+                          fmcToken: newFcmToken);
+                    },
+                  );
+                } catch (e) {
+                  print(e);
+                  Get.offAllNamed(RoutesName.login);
+                }
               }
             },
           );
@@ -60,5 +93,12 @@ class AuthController extends GetxController {
       },
       (userCred) {},
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    notificationRefreshStream?.cancel();
+    super.dispose();
   }
 }

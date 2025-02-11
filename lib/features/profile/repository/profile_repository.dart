@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:country_state_city/utils/utils.dart';
 import 'package:flame/features/friends/models/friend_profile_model.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/exceptions/server_exception.dart';
 import 'package:flame/core/failures/failure.dart';
 import 'package:flame/features/profile/models/interest_model.dart';
-import 'package:country_state_city/models/state.dart' as state;
-import 'package:country_state_city/models/city.dart' as city;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRepository {
@@ -118,12 +115,11 @@ class ProfileRepository {
         },
       ) as List;
 
-      final profile =
-          data.map((doc) => FriendProfileModel.fromJson(doc)).toList();
+      final profile = FriendProfileModel.fromJson(data[0]);
 
-      return right(profile[0]);
+      return right(profile);
     } catch (e) {
-      print("Error during get all friend requests .......");
+      print("Error during get all friend profile .......");
       print(e);
       return left(
         Failure(),

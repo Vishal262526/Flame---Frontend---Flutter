@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flame/core/common/widgets/loader.dart';
 import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/theme/app_colors.dart';
+import 'package:flame/features/auth/controller/auth_controller.dart';
 import 'package:flame/features/users/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +23,7 @@ class _MatchPageState extends State<MatchPage>
   bool get wantKeepAlive => true;
 
   final _userController = Get.put(UsersController());
+  final _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +35,16 @@ class _MatchPageState extends State<MatchPage>
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(RoutesName.flames);
+              },
               icon: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 6.0),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 6.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.0),
                   border: Border.all(
-                    color: kWhiteColor,
+                    color: kWhiteColor.withValues(alpha: 0.5),
                   ),
                 ),
                 child: Row(
@@ -50,16 +54,16 @@ class _MatchPageState extends State<MatchPage>
                       FontAwesomeIcons.fire,
                     ),
                     SizedBox(
-                      width: 4.0,
+                      width: 8.0,
                     ),
-                    Text(
-                      "100",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: kWhiteColor,
-                      ),
-                    )
+                    Obx(() => Text(
+                          "${_authController.myProfile.value?.flames ?? 0}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: kWhiteColor,
+                          ),
+                        ))
                   ],
                 ),
               )),

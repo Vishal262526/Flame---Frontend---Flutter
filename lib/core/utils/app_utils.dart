@@ -9,11 +9,13 @@ import 'package:image_picker/image_picker.dart';
 class AppUtils {
   static void showToast({
     required String message,
+    Color backgroundColor = Colors.green,
+    Color forgroundColor = kWhiteColor,
   }) {
     Fluttertoast.showToast(
       msg: message,
-      backgroundColor: DarkColors.border1,
-      textColor: kWhiteColor,
+      backgroundColor: backgroundColor,
+      textColor: forgroundColor,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/core/config/supabase_config.dart';
 import 'package:flame/core/routes/routes.dart';
 import 'package:flame/core/routes/routes_name.dart';
@@ -9,6 +10,7 @@ import 'package:flame/features/profile/controller/profile_controller.dart';
 import 'package:flame/features/profile/controller/user_profile_controller.dart';
 import 'package:flame/features/users/controllers/navigation_controller.dart';
 import 'package:flame/features/users/controllers/user_controller.dart';
+import 'package:flame/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,10 @@ void main() async {
   // Ensure everything is init perfectly then after the app
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Init Firebase (only for notification)
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Init Supabase
   await Supabase.initialize(
     url: SupabaseConfig.supabaseUrl,
     anonKey: SupabaseConfig.supabaseAnonKey,

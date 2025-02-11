@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
+import 'package:flame/core/common/enums/gender_enum.dart';
 import 'package:flame/core/theme/app_colors.dart';
 import 'package:flame/core/utils/app_utils.dart';
 import 'package:flame/core/utils/date_time_utils.dart';
@@ -148,8 +149,11 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 8.0,
                             children: [
-                              const Icon(
-                                Icons.man_outlined,
+                              Icon(
+                                _friendController.profile.value?.gender ==
+                                        Gender.male
+                                    ? Icons.male
+                                    : Icons.female,
                               ),
                               Text(
                                 StringUtils.convertToCapitalize(
@@ -276,10 +280,13 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                                 )
                                 .toList() ??
                             [],
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 100.0,
+                ),
               ],
             ),
           ),

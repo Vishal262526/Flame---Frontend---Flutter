@@ -61,12 +61,12 @@ class UserModel {
       name: json['name'] as String,
       gender: Gender.values[json['gender_id'] as int],
       dob: DateTime.parse(json['dob'] as String),
+      images: json['images'] as List,
+      interests: json['interests'] as List,
       state: json['state'] as String,
       city: json['city'] as String,
       showMeGender: Gender.values[json['show_me_gender_id'] as int],
-      images: json['images'] as List,
-      interests: json['interests'] as List,
-      lastActive: DateTime.parse((json['lastActive'] as String)),
+      lastActive: DateTime.parse((json['last_active'] as String)),
       age: DateTimeUtils.calculateAge(DateTime.parse((json['dob'] as String))),
     );
   }
@@ -161,7 +161,7 @@ class CurrentUserModel {
       interests: json['interests'] as List,
       snapchatUsername: json['snapchat_username'] as String?,
       instagramUsername: json['instagram_username'] as String?,
-      lastActive: DateTime.parse(json['lastActive'] as String),
+      lastActive: DateTime.parse(json['last_active'] as String),
       age: DateTimeUtils.calculateAge(DateTime.parse(json['dob'] as String)),
       flames: json['flames'] as int,
     );
@@ -171,7 +171,7 @@ class CurrentUserModel {
         "uid": uid,
         "name": name,
         "gender_id": gender.index,
-        "dob": dob,
+        "dob": dob.toIso8601String(),
         "country": country,
         "state": state,
         "city": city,
@@ -181,7 +181,7 @@ class CurrentUserModel {
         "interests": interests,
         "snapchat_username": snapchatUsername,
         "instagram_username": instagramUsername,
-        "lastActive": lastActive.millisecondsSinceEpoch,
+        "last_active": lastActive.toIso8601String(),
         "flames": flames,
       };
 }

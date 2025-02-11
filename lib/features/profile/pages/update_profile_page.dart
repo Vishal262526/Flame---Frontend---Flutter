@@ -290,6 +290,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _profileController.getStates();
+
     _profileController.nameController.text =
         _authController.user.value?.userMetadata?['name'] ?? "";
     _profileController.emailController.text =

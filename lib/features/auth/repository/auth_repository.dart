@@ -25,20 +25,34 @@ class AuthRepository {
     }
   }
 
+  Future<Either<Failure, void>> updateFCMToken(
+      {required String fmcToken}) async {
+    try {
+      final uid = Supabase.instance.client.auth.currentSession?.user.id;
+
+      await _client.from("users").update({"fcm_token": fmcToken}).eq(
+        "uid",
+        uid!,
+      );
+      return right(null);
+    } catch (e) {
+      print(e.toString());
+      return left(Failure());
+    }
+  }
+
   Future<Either<Failure, void>> signInWithGoogle() async {
     try {
       /// TODO: update the Web client ID with your own.
       ///
       /// Web Client ID that you registered with Google Cloud.
-      const webClientId = 'my-web.apps.googleusercontent.com';
+      const webClientId =
+          '608823231892-dbssppl97p54qg4lhjg4i1m1vip8aipo.apps.googleusercontent.com';
 
       /// TODO: update the iOS client ID with your own.
       ///
-      /// iOS Client ID that you registered with Google Cloud.
-      const iosClientId = 'my-ios.apps.googleusercontent.com';
 
       final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: iosClientId,
         serverClientId: webClientId,
       );
       final googleUser = await googleSignIn.signIn();

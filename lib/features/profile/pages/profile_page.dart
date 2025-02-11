@@ -157,43 +157,48 @@ class _ProfilePageState extends State<ProfilePage>
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(
-                    color: kWhiteColor.withOpacity(0.5),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(RoutesName.flames);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: kWhiteColor.withOpacity(0.5),
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.all(20.0),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Total Flames",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                  padding: const EdgeInsets.all(20.0),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total Flames",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 4.0,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.fire,
-                          size: 30,
-                        ),
-                        Text(
-                          "${_authController.myProfile.value!.flames ?? 0}",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 4.0,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.fire,
+                            size: 30,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Text(
+                            "${_authController.myProfile.value!.flames ?? 0}",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

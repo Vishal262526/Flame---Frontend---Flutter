@@ -4,7 +4,7 @@ import 'package:flame/features/friends/models/friend_request_model.dart';
 import 'package:flutter/material.dart';
 
 class ReceivedRequestCard extends StatelessWidget {
-  final Function(FriendRequestModel request) onAccepted;
+  final Function(String friendId) onAccepted;
   final bool disabled;
   final FriendRequestModel user;
 
@@ -46,7 +46,7 @@ class ReceivedRequestCard extends StatelessWidget {
         onTap: disabled
             ? null
             : () {
-                onAccepted(user);
+                onAccepted(user.uid);
               },
         child: const CircleAvatar(
           backgroundColor: DarkColors.border2,

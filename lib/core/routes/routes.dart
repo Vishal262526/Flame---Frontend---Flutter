@@ -1,3 +1,4 @@
+import 'package:flame/features/flames/pages/flames_page.dart';
 import 'package:flame/features/profile/pages/friend_profile_page.dart';
 import 'package:flame/features/profile/pages/my_profile_page.dart';
 import 'package:flame/kayout/bottom_nav.dart';
@@ -55,6 +56,11 @@ class Routes {
     GetPage(
       name: RoutesName.friendProfile,
       page: () => FriendProfilePage(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: RoutesName.flames,
+      page: () => FlamesPage(),
       transition: Transition.rightToLeft,
     ),
   ];

@@ -34,7 +34,7 @@ class ReceivedRequestsListWidget extends StatelessWidget {
                   final user = requestsList[index];
                   return ReceivedRequestCard(
                     disabled: disabled,
-                    onAccepted: (request) {},
+                    onAccepted: onAccepted,
                     user: user,
                   );
                 },

@@ -59,9 +59,9 @@ class FriendController extends GetxController {
     receivedRequestsLoading.value = false;
   }
 
-  void acceptFriendRequest({required FriendRequestModel friend}) async {
+  void acceptFriendRequest({required String friendId}) async {
     actionProcessing.value = true;
-    final res = await _friendRepository.acceptFriendRequest(friend: friend);
+    final res = await _friendRepository.acceptFriendRequest(friendId: friendId);
 
     res.fold(
       (failure) {

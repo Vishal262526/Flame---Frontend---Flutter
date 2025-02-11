@@ -8,10 +8,11 @@ class UsersRepository {
 
   Future<Either<Failure, List<UserModel>>> loadUserProfiles() async {
     try {
-      final usersData = await _client.rpc("load_users") as List;
+      final usersData = await _client.rpc("load_users", params: {
+        "gender": 1,
+      }) as List;
 
-      final users =
-          usersData.map((user) => UserModel.fromJson(user.data())).toList();
+      final users = usersData.map((user) => UserModel.fromJson(user)).toList();
 
       return right(users);
     } catch (e) {

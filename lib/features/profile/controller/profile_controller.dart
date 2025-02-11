@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:age_calculator/age_calculator.dart';
+import 'package:country_state_city/utils/utils.dart';
 import 'package:flame/core/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
@@ -242,14 +243,21 @@ class ProfileController extends GetxController {
         flames: 100,
       );
 
-      await _profileRepository.updateProfile(
+      final res = await _profileRepository.updateProfile(
         user: user,
         images: selectedImages,
       );
 
       // Save the user to the state and navigate to the home screen
 
-      Get.offAllNamed(RoutesName.home);
+      res.fold(
+        (failure) {
+          AppUtils.showSnackBar(title: "Error", message: failure.message);
+        },
+        (success) {
+          Get.offAllNamed(RoutesName.home);
+        },
+      );
     } on ServerException catch (e) {
       AppUtils.showSnackBar(title: "Error", message: e.message);
     } finally {
@@ -274,6 +282,8 @@ class ProfileController extends GetxController {
     }
 
     selectedState.value = state;
+
+    getAllCitiesByState(state.isoCode);
   }
 
   void updateCity(city.City city) {
@@ -296,6 +306,18 @@ class ProfileController extends GetxController {
     }
 
     refresh();
+  }
+
+  void getStates() async {
+    final states = await getStatesOfCountry("IN");
+
+    stateList.value = states;
+  }
+
+  void getAllCitiesByState(String stateId) async {
+    final cities = await getStateCities("IN", stateId);
+
+    cityList.value = cities;
   }
 
   void searchState(String query) async {

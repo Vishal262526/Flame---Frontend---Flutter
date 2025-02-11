@@ -45,7 +45,7 @@ class FriendProfileModel {
       interests: json['interests'] as List,
       snapchatUsername: json['snapchat_username'] as String?,
       instagramUsername: json['instagram_username'] as String?,
-      lastActive: DateTime.parse(json['lastActive'] as String),
+      lastActive: DateTime.parse(json['last_active'] as String),
       age: DateTimeUtils.calculateAge(DateTime.parse(json['dob'] as String)),
     );
   }

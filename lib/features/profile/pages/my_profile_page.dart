@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
+import 'package:flame/core/common/enums/gender_enum.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/theme/app_colors.dart';
 import 'package:flame/core/utils/app_utils.dart';
@@ -130,12 +131,13 @@ class MyProfilePage extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: 8.0,
                         children: [
-                          const Icon(
-                            Icons.man_outlined,
+                          Icon(
+                            user.gender == Gender.male
+                                ? Icons.male
+                                : Icons.female,
                           ),
                           Text(
-                            StringUtils.convertToCapitalize(
-                                user.gender.name ?? "Gender"),
+                            StringUtils.convertToCapitalize(user.gender.name),
                             style: TextStyle(
                               color: kWhiteColor.withOpacity(0.8),
                               fontSize: 16.0,
