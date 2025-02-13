@@ -51,17 +51,25 @@ class _ProfilePageState extends State<ProfilePage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        _authController.myProfile.value?.images[0] ?? "",
-                      ),
-                      fit: BoxFit.cover),
-                  color: DarkColors.primary,
+              InkWell(
+                onTap: () {
+                  Get.toNamed(
+                    RoutesName.viewImage,
+                    arguments: _authController.myProfile.value?.images[0],
+                  );
+                },
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          _authController.myProfile.value?.images[0] ?? "",
+                        ),
+                        fit: BoxFit.cover),
+                    color: DarkColors.primary,
+                  ),
                 ),
               ),
               const SizedBox(

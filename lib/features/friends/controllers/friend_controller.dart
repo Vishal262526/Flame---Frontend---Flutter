@@ -3,6 +3,7 @@ import 'package:flame/features/friends/models/friend_model.dart';
 import 'package:flame/features/friends/models/friend_profile_model.dart';
 import 'package:flame/features/friends/models/friend_request_model.dart';
 import 'package:flame/features/friends/repository/friend_repository.dart';
+import 'package:flame/features/users/controllers/user_controller.dart';
 import 'package:get/get.dart';
 
 class FriendController extends GetxController {
@@ -24,6 +25,8 @@ class FriendController extends GetxController {
   // final sentRequestsList = RxList<FriendRequestModel>([]);
 
   final actionProcessing = false.obs;
+
+  final _userController = Get.find<UsersController>();
 
   // Get All Friends
   void getAllFriends() async {
@@ -67,8 +70,15 @@ class FriendController extends GetxController {
       (failure) {
         AppUtils.showSnackBar(title: "Error", message: failure.message);
       },
-      (successMessage) {
-        AppUtils.showToast(message: successMessage);
+      (data) {
+        AppUtils.showToast(message: data.message);
+        if (data.status == 0) {
+          receivedRequestsList.value = receivedRequestsList
+              .where((request) => request.uid != friendId)
+              .toList();
+
+          Get.back();
+        }
       },
     );
 
@@ -89,12 +99,17 @@ class FriendController extends GetxController {
         AppUtils.showSnackBar(title: "Errro", message: failure.message);
         actionProcessing.value = false;
       },
-      (successMessage) {
+      (data) {
         AppUtils.showToast(
-          message: successMessage['message'],
+          message: data.message,
         );
 
-        Get.back();
+        if (data.status == 0) {
+          _userController.users.value = _userController.users
+              .where((user) => user.uid != friendId)
+              .toList();
+          Get.back();
+        }
       },
     );
 

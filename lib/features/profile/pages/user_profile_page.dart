@@ -3,12 +3,15 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flame/core/common/enums/gender_enum.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/common/widgets/button.dart';
+import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/theme/app_colors.dart';
+import 'package:flame/core/utils/app_utils.dart';
 import 'package:flame/core/utils/date_time_utils.dart';
 import 'package:flame/core/utils/string_utils.dart';
 import 'package:flame/features/friends/controllers/friend_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({
@@ -45,6 +48,27 @@ class UserProfilePage extends StatelessWidget {
             ),
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              AppUtils.showToast(
+                message: "This Feature is under development",
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(
+                8.0,
+              ),
+              child: CircleAvatar(
+                backgroundColor: kWhiteColor,
+                child: Icon(
+                  Icons.flag,
+                  color: kBlackColor,
+                ),
+              ),
+            ),
+          ),
+        ],
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
@@ -58,10 +82,18 @@ class UserProfilePage extends StatelessWidget {
               child: PageView.builder(
                 itemCount: friend.images.length,
                 itemBuilder: (context, index) {
-                  return CachedNetworkImage(
-                    imageUrl: friend.images[index] ??
-                        "https://t4.ftcdn.net/jpg/05/17/53/57/360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg",
-                    fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(
+                        RoutesName.viewImage,
+                        arguments: friend.images[index],
+                      );
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: friend.images[index] ??
+                          "https://t4.ftcdn.net/jpg/05/17/53/57/360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg",
+                      fit: BoxFit.cover,
+                    ),
                   );
                 },
               ),

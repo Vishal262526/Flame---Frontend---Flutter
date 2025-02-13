@@ -1,3 +1,4 @@
+import 'package:flame/core/common/pages/view_image_page.dart';
 import 'package:flame/features/flames/pages/flames_page.dart';
 import 'package:flame/features/profile/pages/friend_profile_page.dart';
 import 'package:flame/features/profile/pages/my_profile_page.dart';
@@ -62,6 +63,11 @@ class Routes {
       name: RoutesName.flames,
       page: () => FlamesPage(),
       transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: RoutesName.viewImage,
+      page: () => ViewImagePage(),
+      transition: Transition.fade,
     ),
   ];
 }

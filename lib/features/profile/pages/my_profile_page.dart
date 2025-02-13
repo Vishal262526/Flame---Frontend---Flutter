@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flame/core/common/enums/gender_enum.dart';
 import 'package:flame/core/common/models/user_model.dart';
+import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/theme/app_colors.dart';
 import 'package:flame/core/utils/app_utils.dart';
 import 'package:flame/core/utils/date_time_utils.dart';
@@ -53,10 +54,18 @@ class MyProfilePage extends StatelessWidget {
               child: PageView.builder(
                 itemCount: user.images.length,
                 itemBuilder: (context, index) {
-                  return CachedNetworkImage(
-                    imageUrl: user.images[index] ??
-                        "https://t4.ftcdn.net/jpg/05/17/53/57/360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg",
-                    fit: BoxFit.cover,
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed(
+                        RoutesName.viewImage,
+                        arguments: user.images[index],
+                      );
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: user.images[index] ??
+                          "https://t4.ftcdn.net/jpg/05/17/53/57/360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg",
+                      fit: BoxFit.cover,
+                    ),
                   );
                 },
               ),

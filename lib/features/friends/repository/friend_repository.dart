@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flame/core/common/models/response_data.dart';
 import 'package:flame/core/failures/failure.dart';
 import 'package:flame/features/friends/models/friend_model.dart';
 import 'package:flame/features/friends/models/friend_request_model.dart';
@@ -64,15 +65,19 @@ class FriendRepository {
     }
   }
 
-  Future<Either<Failure, String>> acceptFriendRequest({
+  Future<Either<Failure, ResponseData>> acceptFriendRequest({
     required String friendId,
   }) async {
     try {
       // Check friend request is exists or not
-      final message = await _client
+      final res = await _client
           .rpc("accept_request", params: {"friend_id": friendId}) as String;
 
-      return right(message);
+      final jsonData = json.decode(res) as Map<String, dynamic>;
+
+      final data = ResponseData.fromJson(jsonData);
+
+      return right(data);
     } catch (e) {
       print(e);
       return left(
@@ -81,14 +86,18 @@ class FriendRepository {
     }
   }
 
-  Future<Either<Failure, Map>> sentRequest({
+  Future<Either<Failure, ResponseData>> sentRequest({
     required String friendId,
   }) async {
     try {
-      final jsonStringData = await _client
-          .rpc("sent_request", params: {"friend_id": friendId}) as String;
+      final jsonStringData = await _client.rpc(
+        "sent_request",
+        params: {"friend_id": friendId},
+      ) as String;
 
-      final data = json.decode(jsonStringData) as Map;
+      final jsonData = json.decode(jsonStringData) as Map<String, dynamic>;
+
+      final data = ResponseData.fromJson(jsonData);
 
       return right(data);
     } catch (e) {
