@@ -11,6 +11,7 @@ import 'package:flame/features/profile/controller/user_profile_controller.dart';
 import 'package:flame/features/users/controllers/navigation_controller.dart';
 import 'package:flame/features/users/controllers/user_controller.dart';
 import 'package:flame/firebase_options.dart';
+import 'package:flame/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,8 @@ void main() async {
   // Init Firebase (only for notification)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Init Supabase
+  await NotificationServices().initNotification();
+
   await Supabase.initialize(
     url: SupabaseConfig.supabaseUrl,
     anonKey: SupabaseConfig.supabaseAnonKey,

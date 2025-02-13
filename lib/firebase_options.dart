@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'flame-notification',
     storageBucket: 'flame-notification.firebasestorage.app',
   );
+
 }

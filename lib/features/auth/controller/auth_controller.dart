@@ -9,6 +9,17 @@ import 'package:get/get.dart';
 import 'package:flame/features/auth/repository/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+Future<void> handleBackgroundNotification(RemoteMessage message) async {
+  (message) async {
+    print("Background notification received...........");
+    NotificationServices.showNotification(
+      id: DateTime.now().second,
+      title: message.notification?.title ?? "",
+      body: message.notification?.body ?? "",
+    );
+  };
+}
+
 class AuthController extends GetxController {
   // States
   final isLoading = false.obs;
@@ -20,6 +31,7 @@ class AuthController extends GetxController {
   final myProfile = Rx<CurrentUserModel?>(null);
 
   StreamSubscription? notificationRefreshStream;
+  StreamSubscription? notificationForgoundMessageStream;
 
   @override
   void onReady() {
@@ -54,6 +66,7 @@ class AuthController extends GetxController {
                   await NotificationServices.requestNotificationPermission();
 
                   notificationRefreshStream?.cancel();
+                  notificationForgoundMessageStream?.cancel();
 
                   // Get the FCM Token
                   final fcmToken = await NotificationServices.getFcmToken();
@@ -72,7 +85,22 @@ class AuthController extends GetxController {
                           fmcToken: newFcmToken);
                     },
                   );
+
+                  FirebaseMessaging.onBackgroundMessage(
+                      handleBackgroundNotification);
+
+                  FirebaseMessaging.onMessage.listen(
+                    (message) {
+                      print("Forgound Notification is received ........");
+                      NotificationServices.showNotification(
+                        id: DateTime.now().second,
+                        title: message.notification?.title ?? "",
+                        body: message.notification?.body ?? "",
+                      );
+                    },
+                  );
                 } catch (e) {
+                  print("Something is wrong with this auth controller .......");
                   print(e);
                   Get.offAllNamed(RoutesName.login);
                 }
@@ -99,6 +127,7 @@ class AuthController extends GetxController {
   void dispose() {
     // TODO: implement dispose
     notificationRefreshStream?.cancel();
+    notificationForgoundMessageStream?.cancel();
     super.dispose();
   }
 }
