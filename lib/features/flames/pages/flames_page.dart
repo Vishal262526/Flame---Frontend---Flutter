@@ -53,9 +53,7 @@ class FlamesPage extends StatelessWidget {
                 padding: const EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: DarkColors.border2,
-                    )),
+                    border: Border.all(color: DarkColors.border2, width: 3)),
                 child: Column(
                   children: [
                     Text(
