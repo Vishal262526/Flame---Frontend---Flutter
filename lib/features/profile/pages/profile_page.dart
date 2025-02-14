@@ -7,6 +7,7 @@ import 'package:flame/core/utils/social_utils.dart';
 import 'package:flame/features/auth/controller/auth_controller.dart';
 import 'package:flame/features/profile/widgets/profile_menu_bottom_sheet.dart';
 import 'package:flame/features/profile/widgets/social_button.dart';
+import 'package:flame/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -101,10 +102,15 @@ class _ProfilePageState extends State<ProfilePage>
 
                 text: "See how others view you!",
                 onTap: () {
-                  Get.toNamed(
-                    RoutesName.myProfile,
-                    arguments: _authController.myProfile.value!,
-                  );
+                  // Get.toNamed(
+                  //   RoutesName.myProfile,
+                  //   arguments: _authController.myProfile.value!,
+                  // );
+
+                  NotificationServices.showNotification(
+                      id: DateTime.now().second,
+                      title: "Test",
+                      body: "This is my test notification");
                 },
               ),
               const SizedBox(

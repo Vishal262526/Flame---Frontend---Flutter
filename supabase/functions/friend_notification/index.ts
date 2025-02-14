@@ -58,6 +58,14 @@ Deno.serve(async (req) => {
             title: "You’ve Got a New Buddy!",
             body: `${name} accepted your request.`,
           },
+          android: {
+            "priority": "high",
+            notification: {
+              sound: 'default', // Use the device's default notification sound
+              // Other Android notification options can be added here, e.g.,
+              // channel_id: 'your_channel_id', // If using notification channels (recommended)
+            },
+        },
         },
       }),
     }

@@ -31,12 +31,13 @@ Deno.serve(async (req) => {
 
   const { data: senderData } = await supabase
     .from('users')
-    .select('name')
+    .select('name, images')
     .eq('uid', payload.record.sender_id)
     .single()
 
   const fcmToken = data!.fcm_token as string
   const name = senderData!.name as string
+  const image = Array.isArray(senderData!.images as string0)[0];
 
   const accessToken = await getAccessToken({
     clientEmail: serviceAccount.client_email,
@@ -57,9 +58,21 @@ Deno.serve(async (req) => {
           notification: {
             title: `New Friend Alert!`,
             body: `${name} just sent you a request. Ready to connect?`,
+            image, 
+           
+          },
+          android: {
+            "priority": "high",
+              notification: {
+              sound: 'default', // Use the device's default notification sound
+              image, 
+              // Other Android notification options can be added here, e.g.,
+              // channel_id: 'your_channel_id', // If using notification channels (recommended)
+            },
           },
         },
-      }),
+      }
+    ),
     }
   )
 

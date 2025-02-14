@@ -4,21 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/utils/app_utils.dart';
+import 'package:flame/main.dart';
 import 'package:flame/services/notification_services.dart';
 import 'package:get/get.dart';
 import 'package:flame/features/auth/repository/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-Future<void> handleBackgroundNotification(RemoteMessage message) async {
-  (message) async {
-    print("Background notification received...........");
-    NotificationServices.showNotification(
-      id: DateTime.now().second,
-      title: message.notification?.title ?? "",
-      body: message.notification?.body ?? "",
-    );
-  };
-}
 
 class AuthController extends GetxController {
   // States
@@ -86,9 +76,6 @@ class AuthController extends GetxController {
                     },
                   );
 
-                  FirebaseMessaging.onBackgroundMessage(
-                      handleBackgroundNotification);
-
                   FirebaseMessaging.onMessage.listen(
                     (message) {
                       print("Forgound Notification is received ........");
@@ -98,6 +85,10 @@ class AuthController extends GetxController {
                         body: message.notification?.body ?? "",
                       );
                     },
+                  );
+
+                  FirebaseMessaging.onBackgroundMessage(
+                    handleBackgroundNotification,
                   );
                 } catch (e) {
                   print("Something is wrong with this auth controller .......");

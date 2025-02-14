@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 class NotificationServices {
   static final notificationPlugin = FlutterLocalNotificationsPlugin();
@@ -11,17 +10,36 @@ class NotificationServices {
 
   static Future<String?> getFcmToken() => FirebaseMessaging.instance.getToken();
 
-  static Future<NotificationSettings> requestNotificationPermission() =>
-      FirebaseMessaging.instance.requestPermission();
+  static Future<bool> requestNotificationPermission() async {
+    final status = await FirebaseMessaging.instance.requestPermission();
+
+    if (status.authorizationStatus == AuthorizationStatus.authorized) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  AndroidNotificationChannel _notificationChannel() {
+    final channel = AndroidNotificationChannel(
+      "main_notification_id", "main_notification",
+      description: "Daily Notification Channel",
+      importance: Importance.max, // High importance for pop-ups and sound
+      playSound: true,
+      // sound: RawResourceAndroidNotificationSound("default"),
+    );
+    return channel;
+  }
 
   static NotificationDetails notificationDetails() {
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        "notification_id",
-        "notification",
+        "main_notification_id",
+        "main_notification",
         channelDescription: "Daily Notification Channel",
         importance: Importance.max,
         priority: Priority.high,
+        playSound: true,
       ),
     );
   }
@@ -38,6 +56,11 @@ class NotificationServices {
     final initSettings = InitializationSettings(android: initSettingsAndroid);
 
     try {
+      await notificationPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(_notificationChannel());
+
       await notificationPlugin.initialize(initSettings);
     } catch (e) {
       print("Error During local notification initialization .........");
@@ -50,7 +73,7 @@ class NotificationServices {
     String? title,
     String? body,
   }) async {
-    return notificationPlugin.show(
+    notificationPlugin.show(
       id,
       title,
       body,

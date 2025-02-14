@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flame/core/config/supabase_config.dart';
 import 'package:flame/core/routes/routes.dart';
 import 'package:flame/core/routes/routes_name.dart';
@@ -16,6 +17,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+@pragma('vm:entry-point')
+Future<void> handleBackgroundNotification(RemoteMessage message) async {
+  (message) async {
+    print("Background Notification Received");
+    print("Background notification received...........");
+    NotificationServices.showNotification(
+      id: DateTime.now().second,
+      title: message.notification?.title ?? "",
+      body: message.notification?.body ?? "",
+    );
+  };
+}
 
 void main() async {
   // Ensure everything is init perfectly then after the app
