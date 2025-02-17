@@ -1,12 +1,15 @@
 import 'package:flame/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class FlamesPage extends StatelessWidget {
   const FlamesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final flames = Get.arguments as int;
+
     final rules = [
       "Flames is a form of points within the Flame app. You will need these points in certain parts of your interaction within the app",
       "You will receive 100 Flames as a sign-up bonus",
@@ -33,7 +36,7 @@ class FlamesPage extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                "100",
+                flames.toString(),
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,

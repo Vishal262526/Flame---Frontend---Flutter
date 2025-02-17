@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  final _authController = Get.put(AuthController());
+  final _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

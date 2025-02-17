@@ -74,6 +74,17 @@ class AuthRepository {
       );
       return right(null);
     } catch (e) {
+      print("Error during login with google .......");
+      print(e.toString());
+      return left(Failure());
+    }
+  }
+
+  Future<Either<Failure, void>> singOut() async {
+    try {
+      await _client.auth.signOut();
+      return right(null);
+    } catch (e) {
       print(e.toString());
       return left(Failure());
     }

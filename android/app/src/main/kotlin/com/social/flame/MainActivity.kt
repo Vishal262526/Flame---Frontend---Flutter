@@ -1,4 +1,4 @@
-package com.flame.app
+package com.social.flame
 
 import io.flutter.embedding.android.FlutterActivity
 

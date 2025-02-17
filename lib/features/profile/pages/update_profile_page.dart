@@ -492,7 +492,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         ),
                         UpdateFieldWidget(
                           errorMessage: null,
-                          title: "Show Me",
+                          title: "Interested In",
                           onNextTap: _profileController.goToNextPage,
                           onBackTap: _profileController.goToPreviousPage,
                           child: ProfileGenderField(

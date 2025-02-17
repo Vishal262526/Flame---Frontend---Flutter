@@ -80,7 +80,7 @@ class MyProfilePage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "${user.name ?? "User Name"}, ${user.age ?? "00"}",
+                    "${StringUtils.getFirstName(user.name)}, ${user.age ?? "00"}",
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

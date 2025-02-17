@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:country_state_city/utils/utils.dart';
 import 'package:flame/core/routes/routes_name.dart';
+import 'package:flame/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:geolocator/geolocator.dart';
@@ -53,11 +54,8 @@ class ProfileController extends GetxController {
   final selectedGender = Rx<Gender>(Gender.male);
   final selectedShowMeGender = Rx<Gender>(Gender.male);
   final selectedImages = <File>[].obs;
-  final selectedDOB = Rx<DateTime>(
-    DateTime.now().subtract(
-      const Duration(days: 6570),
-    ),
-  );
+  final selectedDOB = Rx<DateTime>(DateTime(
+      DateTime.now().year - 18, DateTime.now().month, DateTime.now().day));
   final selectedState = Rx<state.State?>(null);
   final selectedCity = Rx<city.City?>(null);
 
@@ -73,6 +71,7 @@ class ProfileController extends GetxController {
   final socialValidationError = Rx<String?>(null);
 
   final locationValidationError = Rx<String?>(null);
+  final _authController = Get.find<AuthController>();
 
   // Validators
   final _nameValidator = ValidationBuilder()
@@ -117,7 +116,11 @@ class ProfileController extends GetxController {
   }
 
   void validateDOB() {
+    print("Selected DOB value is .....");
+    print(selectedDOB.value);
     final age = AgeCalculator.age(selectedDOB.value);
+
+    print("Age is $age .............");
 
     dobValidationError.value =
         age.years >= 18 ? null : "You need atleast 18 year old to signup ";
@@ -253,9 +256,11 @@ class ProfileController extends GetxController {
       res.fold(
         (failure) {
           AppUtils.showSnackBar(title: "Error", message: failure.message);
+          isProfileUpdating.value = false;
         },
-        (success) {
-          Get.offAllNamed(RoutesName.home);
+        (success) async {
+          await _authController.initUserProfile();
+          isProfileUpdating.value = false;
         },
       );
     } on ServerException catch (e) {

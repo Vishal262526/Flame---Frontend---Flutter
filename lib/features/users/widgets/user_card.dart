@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
+import 'package:flame/core/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/core/common/models/user_model.dart';
 import 'package:flame/core/theme/app_colors.dart';
@@ -107,7 +108,7 @@ class UserCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${user.name}, ${user.age}",
+                        "${StringUtils.getFirstName(user.name)}, ${user.age}",
                         style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,

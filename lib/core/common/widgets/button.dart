@@ -8,6 +8,8 @@ class Button extends StatelessWidget {
   final bool fullWidth;
   final bool isDisabled;
   final Color backgroundColor;
+  final EdgeInsetsGeometry? padding;
+  final TextStyle? textStyle;
 
   const Button({
     super.key,
@@ -17,26 +19,23 @@ class Button extends StatelessWidget {
     this.fullWidth = false,
     this.isDisabled = false,
     this.backgroundColor = DarkColors.primary,
+    this.padding,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: fullWidth ? double.infinity : null,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
+        icon: icon,
         style: ElevatedButton.styleFrom(
+          padding: padding,
           backgroundColor: backgroundColor,
+          textStyle: textStyle,
         ),
         onPressed: isDisabled ? null : onTap,
-        child: Wrap(
-          spacing: 16,
-          direction: Axis.horizontal,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            if (icon != null) icon!,
-            Text(text),
-          ],
-        ),
+        label: Text(text),
       ),
     );
   }

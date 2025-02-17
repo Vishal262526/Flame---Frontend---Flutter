@@ -1,10 +1,12 @@
 import 'package:flame/core/utils/app_utils.dart';
+import 'package:flame/features/auth/controller/auth_controller.dart';
 import 'package:flame/features/friends/models/friend_model.dart';
 import 'package:flame/features/friends/models/friend_profile_model.dart';
 import 'package:flame/features/friends/models/friend_request_model.dart';
 import 'package:flame/features/friends/repository/friend_repository.dart';
 import 'package:flame/features/users/controllers/user_controller.dart';
 import 'package:get/get.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 class FriendController extends GetxController {
   final _friendRepository = FriendRepository();
@@ -27,6 +29,7 @@ class FriendController extends GetxController {
   final actionProcessing = false.obs;
 
   final _userController = Get.find<UsersController>();
+  final _authController = Get.find<AuthController>();
 
   // Get All Friends
   void getAllFriends() async {
@@ -108,10 +111,31 @@ class FriendController extends GetxController {
           _userController.users.value = _userController.users
               .where((user) => user.uid != friendId)
               .toList();
+
+          _authController.myProfile.value =
+              _authController.myProfile.value?.copyWith(
+            flames: data.falmes,
+          );
           Get.back();
         }
       },
     );
+
+    actionProcessing.value = false;
+  }
+
+  void notifySocialOpen({
+    required String social,
+    required String userId,
+    required String friendId,
+  }) async {
+    final res = await _friendRepository.notifySocialOpen(
+      social: social,
+      userId: userId,
+      friendId: friendId,
+    );
+
+    res.fold((failure) {}, (data) {});
 
     actionProcessing.value = false;
   }

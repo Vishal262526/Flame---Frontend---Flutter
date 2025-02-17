@@ -22,11 +22,11 @@ class NotificationServices {
 
   AndroidNotificationChannel _notificationChannel() {
     final channel = AndroidNotificationChannel(
-      "main_notification_id", "main_notification",
+      "flame_custom_channel_id", "flame_custom_channel",
       description: "Daily Notification Channel",
       importance: Importance.max, // High importance for pop-ups and sound
       playSound: true,
-      // sound: RawResourceAndroidNotificationSound("default"),
+      sound: RawResourceAndroidNotificationSound("notification_sound"),
     );
     return channel;
   }
@@ -34,12 +34,13 @@ class NotificationServices {
   static NotificationDetails notificationDetails() {
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        "main_notification_id",
-        "main_notification",
+        "flame_custom_channel_id",
+        "flame_custom_channel",
         channelDescription: "Daily Notification Channel",
         importance: Importance.max,
         priority: Priority.high,
         playSound: true,
+        sound: RawResourceAndroidNotificationSound("notification_sound"),
       ),
     );
   }
@@ -51,15 +52,15 @@ class NotificationServices {
     }
 
     final initSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("@drawable/ic_stat_logo_solid");
 
     final initSettings = InitializationSettings(android: initSettingsAndroid);
 
     try {
-      await notificationPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(_notificationChannel());
+      // await notificationPlugin
+      //     .resolvePlatformSpecificImplementation<
+      //         AndroidFlutterLocalNotificationsPlugin>()
+      //     ?.createNotificationChannel(_notificationChannel());
 
       await notificationPlugin.initialize(initSettings);
     } catch (e) {

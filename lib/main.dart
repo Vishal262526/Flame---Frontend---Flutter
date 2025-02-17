@@ -15,6 +15,7 @@ import 'package:flame/firebase_options.dart';
 import 'package:flame/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,8 +33,8 @@ Future<void> handleBackgroundNotification(RemoteMessage message) async {
 }
 
 void main() async {
-  // Ensure everything is init perfectly then after the app
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Init Firebase (only for notification)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: BindingsBuilder(() {
         Get.put(AuthController());
-        Get.lazyPut(() => NavigationController());
+        Get.put(NavigationController());
         Get.lazyPut(() => FriendController());
         Get.lazyPut(() => UsersController());
         Get.lazyPut(() => UserProfileController());

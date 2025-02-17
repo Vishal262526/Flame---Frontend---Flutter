@@ -111,7 +111,7 @@ class UserProfilePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "${friend.name}, ${friend.age}",
+                          "${StringUtils.getFirstName(friend.name)}, ${friend.age}",
                           style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -122,6 +122,19 @@ class UserProfilePage extends StatelessWidget {
                         width: 10.0,
                       ),
                       Button(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        icon: Icon(
+                          Icons.person_add,
+                          color: kWhiteColor,
+                          size: 20,
+                        ),
                         text: "Add Friend",
                         onTap: _handleAddFriend,
                       ),

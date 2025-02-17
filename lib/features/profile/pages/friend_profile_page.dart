@@ -7,6 +7,8 @@ import 'package:flame/core/utils/app_utils.dart';
 import 'package:flame/core/utils/date_time_utils.dart';
 import 'package:flame/core/utils/social_utils.dart';
 import 'package:flame/core/utils/string_utils.dart';
+import 'package:flame/features/auth/controller/auth_controller.dart';
+import 'package:flame/features/friends/controllers/friend_controller.dart';
 import 'package:flame/features/profile/controller/friend_profile_controller.dart';
 import 'package:flame/features/profile/widgets/social_button.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +25,24 @@ class FriendProfilePage extends StatefulWidget {
 }
 
 class _FriendProfilePageState extends State<FriendProfilePage> {
-  final _friendController = Get.put(FriendProfileController());
+  final _friendProfileController = Get.put(FriendProfileController());
+  final _friendController = Get.find<FriendController>();
+  final _authController = Get.find<AuthController>();
 
   final friendId = Get.arguments as String;
 
   @override
   void initState() {
-    _friendController.loadFriendProfile(friendId: friendId);
+    _friendProfileController.loadFriendProfile(friendId: friendId);
     super.initState();
+  }
+
+  void handleNotifySocialOpen(String social) {
+    _friendController.notifySocialOpen(
+      social: social,
+      userId: _authController.user.value!.id,
+      friendId: friendId,
+    );
   }
 
   @override
@@ -80,7 +92,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
           backgroundColor: Colors.transparent,
         ),
         body: Skeletonizer(
-          enabled: _friendController.isLoading.value,
+          enabled: _friendProfileController.isLoading.value,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,18 +102,19 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                   color: DarkColors.border1,
                   height: Get.height / 1.3,
                   child: PageView.builder(
-                    itemCount: _friendController.profile.value?.images.length,
+                    itemCount:
+                        _friendProfileController.profile.value?.images.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
                           Get.toNamed(
                             RoutesName.viewImage,
-                            arguments:
-                                _friendController.profile.value?.images[index],
+                            arguments: _friendProfileController
+                                .profile.value?.images[index],
                           );
                         },
                         child: CachedNetworkImage(
-                          imageUrl: _friendController
+                          imageUrl: _friendProfileController
                                   .profile.value?.images[index] ??
                               "https://t4.ftcdn.net/jpg/05/17/53/57/360_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg",
                           fit: BoxFit.cover,
@@ -120,7 +133,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "${_friendController.profile.value?.name ?? "User Name"}, ${_friendController.profile.value?.age ?? "00"}",
+                        "${StringUtils.getFirstName(_friendProfileController.profile.value?.name ?? "User Name")}, ${_friendProfileController.profile.value?.age ?? "00"}",
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -160,7 +173,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                             children: [
                               Icon(Icons.location_on_outlined),
                               Text(
-                                "${_friendController.profile.value?.city}, ${_friendController.profile.value?.state}",
+                                "${_friendProfileController.profile.value?.city}, ${_friendProfileController.profile.value?.state}",
                                 style: TextStyle(
                                   color: kWhiteColor.withOpacity(0.8),
                                   fontSize: 18,
@@ -181,14 +194,15 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                             spacing: 8.0,
                             children: [
                               Icon(
-                                _friendController.profile.value?.gender ==
+                                _friendProfileController
+                                            .profile.value?.gender ==
                                         Gender.male
                                     ? Icons.male
                                     : Icons.female,
                               ),
                               Text(
                                 StringUtils.convertToCapitalize(
-                                    _friendController
+                                    _friendProfileController
                                             .profile.value?.gender.name ??
                                         "Gender"),
                                 style: TextStyle(
@@ -213,7 +227,8 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                           ),
                           Text(
                             DateTimeUtils.convertToActiveString(
-                                _friendController.profile.value?.lastActive ??
+                                _friendProfileController
+                                        .profile.value?.lastActive ??
                                     DateTime.now()),
                             style: TextStyle(
                               color: kWhiteColor.withOpacity(0.8),
@@ -237,7 +252,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                       ),
                       Row(
                         children: [
-                          if (_friendController
+                          if (_friendProfileController
                                   .profile.value?.snapchatUsername !=
                               null)
                             Expanded(
@@ -246,11 +261,13 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                                 onTap: () async {
                                   try {
                                     await launchUrl(
-                                        SocialUtils.getSnapchatUrl(
-                                          _friendController
-                                              .profile.value!.snapchatUsername!,
-                                        ),
-                                        mode: LaunchMode.externalApplication);
+                                      SocialUtils.getSnapchatUrl(
+                                        _friendProfileController
+                                            .profile.value!.snapchatUsername!,
+                                      ),
+                                      mode: LaunchMode.externalApplication,
+                                    );
+                                    handleNotifySocialOpen("snapchat");
                                   } catch (e) {
                                     AppUtils.showSnackBar(
                                       title: "Error",
@@ -263,7 +280,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                           const SizedBox(
                             width: 16.0,
                           ),
-                          if (_friendController
+                          if (_friendProfileController
                                   .profile.value?.instagramUsername !=
                               null)
                             Expanded(
@@ -272,11 +289,14 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                                 onTap: () async {
                                   try {
                                     await launchUrl(
-                                        SocialUtils.getInstagramUrl(
-                                          _friendController.profile.value!
-                                              .instagramUsername!,
-                                        ),
-                                        mode: LaunchMode.externalApplication);
+                                      SocialUtils.getInstagramUrl(
+                                        _friendProfileController
+                                            .profile.value!.instagramUsername!,
+                                      ),
+                                      mode: LaunchMode.externalApplication,
+                                    );
+
+                                    handleNotifySocialOpen("instagram");
                                   } catch (e) {
                                     AppUtils.showSnackBar(
                                       title: "Error",
@@ -303,14 +323,15 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                       ),
                       Wrap(
                         spacing: 16.0,
-                        children: _friendController.profile.value?.interests
-                                .map(
-                                  (e) => Chip(
-                                    label: Text(e),
-                                  ),
-                                )
-                                .toList() ??
-                            [],
+                        children:
+                            _friendProfileController.profile.value?.interests
+                                    .map(
+                                      (e) => Chip(
+                                        label: Text(e),
+                                      ),
+                                    )
+                                    .toList() ??
+                                [],
                       ),
                     ],
                   ),

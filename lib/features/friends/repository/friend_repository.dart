@@ -86,6 +86,25 @@ class FriendRepository {
     }
   }
 
+  Future<Either<Failure, void>> notifySocialOpen({
+    required String social,
+    required String userId,
+    required String friendId,
+  }) async {
+    try {
+      // Check friend request is exists or not
+      final res = await _client.functions.invoke("open_social_notification",
+          body: {"social": social, "user_id": userId, "friend_id": friendId});
+
+      return right(null);
+    } catch (e) {
+      print(e);
+      return left(
+        Failure(),
+      );
+    }
+  }
+
   Future<Either<Failure, ResponseData>> sentRequest({
     required String friendId,
   }) async {

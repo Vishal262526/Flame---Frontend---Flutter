@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-        android:label="flame"
+        android:label="FLAME"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -41,7 +44,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="main_notification_id"/>     
+            android:value="flame_custom_channel_id"/>     
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

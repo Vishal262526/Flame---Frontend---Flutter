@@ -89,6 +89,7 @@ class CurrentUserModel {
   final String? instagramUsername;
   final DateTime lastActive;
   final int flames;
+  final String? fcmToken;
 
   CurrentUserModel({
     required this.uid,
@@ -107,6 +108,7 @@ class CurrentUserModel {
     required this.instagramUsername,
     required this.lastActive,
     required this.flames,
+    this.fcmToken,
   });
 
   CurrentUserModel copyWith({
@@ -126,6 +128,7 @@ class CurrentUserModel {
     DateTime? lastActive,
     int? age,
     int? flames,
+    String? fcmToken,
   }) =>
       CurrentUserModel(
         uid: uid ?? this.uid,
@@ -144,27 +147,28 @@ class CurrentUserModel {
         snapchatUsername: snapchatUsername ?? this.snapchatUsername,
         images: images ?? this.images,
         flames: flames ?? this.flames,
+        fcmToken: fcmToken ?? this.fcmToken,
       );
 
   factory CurrentUserModel.fromJson(Map<String, dynamic> json) {
     return CurrentUserModel(
-      uid: json['uid'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      gender: Gender.values[json['gender_id'] as int],
-      dob: DateTime.parse(json['dob'] as String),
-      country: json['country'] as String,
-      state: json['state'] as String,
-      city: json['city'] as String,
-      showMeGender: Gender.values[json['show_me_gender_id'] as int],
-      images: json['images'] as List,
-      interests: json['interests'] as List,
-      snapchatUsername: json['snapchat_username'] as String?,
-      instagramUsername: json['instagram_username'] as String?,
-      lastActive: DateTime.parse(json['last_active'] as String),
-      age: DateTimeUtils.calculateAge(DateTime.parse(json['dob'] as String)),
-      flames: json['flames'] as int,
-    );
+        uid: json['uid'] as String,
+        name: json['name'] as String,
+        email: json['email'] as String,
+        gender: Gender.values[json['gender_id'] as int],
+        dob: DateTime.parse(json['dob'] as String),
+        country: json['country'] as String,
+        state: json['state'] as String,
+        city: json['city'] as String,
+        showMeGender: Gender.values[json['show_me_gender_id'] as int],
+        images: json['images'] as List,
+        interests: json['interests'] as List,
+        snapchatUsername: json['snapchat_username'] as String?,
+        instagramUsername: json['instagram_username'] as String?,
+        lastActive: DateTime.parse(json['last_active'] as String),
+        age: DateTimeUtils.calculateAge(DateTime.parse(json['dob'] as String)),
+        flames: json['flames'] as int,
+        fcmToken: json['fcm_token'] as String?);
   }
 
   Map<String, dynamic> toJson() => {

@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flame/core/common/widgets/loader.dart';
 import 'package:flame/core/routes/routes_name.dart';
 import 'package:flame/core/theme/app_colors.dart';
+import 'package:flame/core/utils/string_utils.dart';
 import 'package:flame/features/auth/controller/auth_controller.dart';
 import 'package:flame/features/users/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:number_formatter/number_formatter.dart';
 
 class MatchPage extends StatefulWidget {
   const MatchPage({super.key});
@@ -36,7 +38,8 @@ class _MatchPageState extends State<MatchPage>
         actions: [
           IconButton(
               onPressed: () {
-                Get.toNamed(RoutesName.flames);
+                Get.toNamed(RoutesName.flames,
+                    arguments: _authController.myProfile.value?.flames ?? 0);
               },
               icon: Container(
                 padding:
@@ -57,7 +60,9 @@ class _MatchPageState extends State<MatchPage>
                       width: 8.0,
                     ),
                     Obx(() => Text(
-                          "${_authController.myProfile.value?.flames ?? 0}",
+                          formatNumber(
+                            _authController.myProfile.value?.flames ?? 0,
+                          ),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -118,7 +123,7 @@ class _MatchPageState extends State<MatchPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "${currentUser.name}, ${currentUser.age}",
+                                "${StringUtils.getFirstName(currentUser.name)}, ${currentUser.age}",
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700,
