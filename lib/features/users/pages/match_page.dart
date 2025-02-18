@@ -53,8 +53,9 @@ class _MatchPageState extends State<MatchPage>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      FontAwesomeIcons.fire,
+                    Image.asset(
+                      "assets/icons/flame_light.png",
+                      height: 50,
                     ),
                     SizedBox(
                       width: 8.0,

@@ -1,3 +1,4 @@
+import 'package:flame/core/common/widgets/button.dart';
 import 'package:flame/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,12 +29,9 @@ class FlamesPage extends StatelessWidget {
           padding: const EdgeInsets.all(25.0),
           child: Column(
             children: [
-              FaIcon(
-                FontAwesomeIcons.fire,
-                size: 110,
-              ),
-              SizedBox(
-                height: 20.0,
+              Image.asset(
+                "assets/icons/flame_light.png",
+                width: 133,
               ),
               Text(
                 flames.toString(),
@@ -47,6 +45,24 @@ class FlamesPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: 25.0,
+              ),
+              Button(
+                text: "Claim daily flames",
+                onTap: () {},
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                "renewed remaning time ",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: DarkColors.gray,
                 ),
               ),
               SizedBox(
@@ -70,6 +86,7 @@ class FlamesPage extends StatelessWidget {
                       height: 15.0,
                     ),
                     ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: rules.length,
                       itemBuilder: (context, index) {

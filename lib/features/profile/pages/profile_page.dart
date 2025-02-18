@@ -201,9 +201,9 @@ class _ProfilePageState extends State<ProfilePage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       spacing: 4.0,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.fire,
-                          size: 30,
+                        Image.asset(
+                          "assets/icons/flame_light.png",
+                          width: 30,
                         ),
                         Text(
                           formatNumber(_authController.myProfile.value!.flames),
