@@ -50,7 +50,7 @@ class LoginView extends StatelessWidget {
                       const SizedBox(
                         height: 50,
                       ),
-                      Image.asset("assets/images/logo.jpeg"),
+                      Image.asset("assets/images/logo_dark.png"),
                     ],
                   ),
                 ),
