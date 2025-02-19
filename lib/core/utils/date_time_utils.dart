@@ -19,4 +19,10 @@ class DateTimeUtils {
       return "Recently Active";
     }
   }
+
+  static Duration getRemaningTime(DateTime dateTime) {
+    final now = DateTime.now();
+
+    return dateTime.add(Duration(days: 1)).difference(now);
+  }
 }

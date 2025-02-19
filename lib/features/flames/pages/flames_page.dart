@@ -1,11 +1,57 @@
+import 'dart:async';
+
 import 'package:flame/core/common/widgets/button.dart';
 import 'package:flame/core/theme/app_colors.dart';
+import 'package:flame/core/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-class FlamesPage extends StatelessWidget {
+class FlamesPage extends StatefulWidget {
   const FlamesPage({super.key});
+
+  @override
+  State<FlamesPage> createState() => _FlamesPageState();
+}
+
+class _FlamesPageState extends State<FlamesPage> {
+  Timer? timer;
+  Duration remaningTime = Duration(seconds: 0);
+
+  void handleRemaningTime() {
+    final lastCalimed = DateTime(2025, 2, 18, 20, 15);
+
+    remaningTime = DateTimeUtils.getRemaningTime(lastCalimed);
+
+    timer = Timer.periodic(
+      Duration(seconds: 1),
+      (timer) {
+        if (remaningTime.isNegative) {
+          timer.cancel();
+          remaningTime = Duration.zero;
+          print("Date time is negative ");
+        } else {
+          print(
+              "${remaningTime.inHours} : ${remaningTime.inMinutes % 60} : ${remaningTime.inSeconds % 60}");
+
+          remaningTime = remaningTime - Duration(seconds: 1);
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    handleRemaningTime();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
