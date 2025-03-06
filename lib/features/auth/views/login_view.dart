@@ -1,3 +1,4 @@
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flame/core/common/widgets/button.dart';
 import 'package:flame/core/theme/app_colors.dart';
@@ -48,9 +49,9 @@ class LoginView extends StatelessWidget {
                         style: TextStyle(fontSize: 24, color: Colors.grey),
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 100,
                       ),
-                      Image.asset("assets/images/logo_dark.png"),
+                      SvgPicture.asset("assets/icons/logo.svg"),
                     ],
                   ),
                 ),

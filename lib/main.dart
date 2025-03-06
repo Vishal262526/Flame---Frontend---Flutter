@@ -22,6 +22,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 @pragma('vm:entry-point')
 Future<void> handleBackgroundNotification(RemoteMessage message) async {
   (message) async {
+    print("Background Notification was commming ........");
     NotificationServices.showNotification(
       id: message.hashCode,
       title: message.notification?.title ?? "",

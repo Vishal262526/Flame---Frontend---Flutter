@@ -1,0 +1,2 @@
+/Users/vishalkumar/Desktop/Flutter/flame/android/app/.cxx/Debug/14543m2q/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/vishalkumar/Desktop/Flutter/flame/android/app/.cxx/Debug/14543m2q/armeabi-v7a/CMakeFiles/rebuild_cache.dir

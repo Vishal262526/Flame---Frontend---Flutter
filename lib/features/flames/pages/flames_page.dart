@@ -18,7 +18,7 @@ class _FlamesPageState extends State<FlamesPage> {
   Duration remaningTime = Duration(seconds: 0);
 
   void handleRemaningTime() {
-    final lastCalimed = DateTime(2025, 2, 18, 20, 15);
+    final lastCalimed = DateTime(2025, 3, 5, 16, 13);
 
     remaningTime = DateTimeUtils.getRemaningTime(lastCalimed);
 
